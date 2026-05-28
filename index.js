@@ -1,6 +1,3 @@
-const express = require("express");
-const app = express();
-
 const messages = {
   rain: [
     "CITY mein TEMPC baarish ho rhi hai — lgta hai kisi ka yaar haas rha hai! Raje Shah waali feeling aa gayi chat mein!",
@@ -34,11 +31,11 @@ const messages = {
   ]
 };
 
-app.get("/temp", (req, res) => {
+module.exports = (req, res) => {
   const t = parseInt(req.query.t) || 0;
   const rain = parseFloat(req.query.rain) > 0;
   const cloud = parseInt(req.query.cloud) > 50;
-  const city = req.query.city || "Moga";
+  const city = decodeURIComponent(req.query.city || "Moga");
   const user = req.query.user ? " @" + req.query.user : "";
 
   let cat;
@@ -55,6 +52,4 @@ app.get("/temp", (req, res) => {
 
   res.setHeader("Content-Type", "text/plain");
   res.send(final);
-});
-
-app.listen(3000, () => console.log("Tempbot running!"));
+};
